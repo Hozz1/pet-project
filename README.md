@@ -1,4 +1,4 @@
-# 📘 Pet project with Django + DRF + Redis
+# 📘 Pet project with Django + DRF + PostgreSQL + Redis
 
 ## Содержание
 - [Стек](#стек)
@@ -21,6 +21,7 @@
 - **Python** 3.11+
 - **Django** (DRF)
 - **Redis** (кэш + троттлинг)
+- **PostgreSQL**
 - **Docker** (для Redis)
 - (Optional) **Celery** — в планах
 
