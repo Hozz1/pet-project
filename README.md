@@ -130,8 +130,7 @@ python manage.py createsuperuser
   `GET /api/v1/courses/top/?limit=5&order=title` — топ по выбранному полю  
     по умолчанию `order=-id` (замени на свои поля, когда появятся рейтинги)
 
-Есть и другие пути (например, `/api/v1/me/`, `/api/v1/user/<id>/`, служебные ключи Redis), см. `backend/urls.py`.  
-Если используешь альтернативные пути для update/delete — зафиксируй их в этом разделе.
+Есть и другие пути (например, `/api/v1/me/`, `/api/v1/user/<id>/`, служебные ключи Redis), см. `backend/urls.py`.
 
 ---
 
@@ -233,7 +232,7 @@ python manage.py shell -c "from django.core.cache import cache; cache.set('test:
 docker exec -it backend-redis-1 sh -lc "redis-cli -n 1 get ':1:test:foo'"
 ```
 
-> Хочешь аккуратные ключи — добавь в `CACHES["default"]` `KEY_PREFIX="app"`, тогда вид будет `app:1:...`.
+> Для аккуратных ключей — `CACHES["default"]` `KEY_PREFIX="app"`, тогда вид будет `app:1:...`.
 
 ---
 
