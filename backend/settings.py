@@ -86,6 +86,23 @@ DATABASES = {
     }
 }
 
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+CACHE_TTL = int(os.environ.get("CACHE_TTL", 300))
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get("REDIS_URL", "redis://127.0.0.1:6379/1"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+            "IGNORE_EXCEPTIONS": True,  # чтобы падение Redis не ломало сайт
+        },
+        "TIMEOUT": CACHE_TTL,  # дефолтный TTL
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -132,5 +149,14 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer', # Можно отключить, если не нужно
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+        "rest_framework.throttling.ScopedRateThrottle",
     ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "60/min",  # гости
+        "user": "120/min",  # авторизованные
+        "courses-top": "10/min",  # скоуп для /api/v1/courses/top/
+        # "courses-search": "10/min"  # для поиска
+    },
 }
