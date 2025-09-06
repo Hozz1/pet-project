@@ -1,5 +1,4 @@
 import json
-
 from django.shortcuts import render
 from .models import Course
 from .serializers import CoursesSerializer, UserSerializer, CurrentUserSerializer
@@ -45,7 +44,6 @@ class CourseDetailView(generics.RetrieveAPIView):
         resp["X-Cache"] = "MISS detail"
         return resp
 
-# /api/v1/courses/top/
 class TopCoursesView(APIView):
     throttle_scope = "courses-top"
     throttle_classes = [ScopedRateThrottle]
@@ -59,7 +57,7 @@ class TopCoursesView(APIView):
             resp["X-Cache"] = "HIT top"
             return resp
 
-        qs = Course.objects.order_by("-title")[:limit]  # замени на реальные поля
+        qs = Course.objects.order_by("-title")[:limit]
         data = CoursesSerializer(qs, many=True).data
         cache.set(key, data, timeout=60)
         resp = Response(data)
